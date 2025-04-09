@@ -1,0 +1,18 @@
+# node and build stuff
+node_modules
+dist
+build
+coverage
+
+# configs/output
+.vite
+.env
+*.log
+
+# generated lock files
+package-lock.json
+pnpm-lock.yaml
+yarn.lock
+
+# Optional: ignore public assets
+public/*
