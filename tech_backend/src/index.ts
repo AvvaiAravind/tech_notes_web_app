@@ -1,22 +1,33 @@
-import express from 'express';
-import path, { dirname } from 'path';
-import { fileURLToPath } from 'url';
+import express from "express";
+import path from "path";
+import root from "./routes/root.js";
+import getPathInfo from "./utils/pathHelper.js";
 
-// since es modules we need to create filename and dirname manually
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+const { __dirname } = getPathInfo(import.meta.url);
 
 const app = express();
 const PORT = process.env.PORT || 3500;
 
+// Middleware
+
 // Middleware to parse JSON
 app.use(express.json());
-app.use('/', express.static(path.join(__dirname, '/public')));
+// Middleware for giving static files
+app.use("/", express.static(path.join(__dirname, "..", "public")));
 
 // Basic route to test the server
-app.get('/', (_req, res) => {
-  res.send('Backend is running!');
+app.use("/", root);
+
+// 404 route
+app.all(/.*/, (req, res) => {
+  res.status(404);
+  if (req.accepts("html")) {
+    res.sendFile(path.join(__dirname, "views", "404.html"));
+  } else if (req.accepts("json")) {
+    res.json({ error: "404 Not Found" });
+  } else {
+    res.type("txt").send("404 Not Found");
+  }
 });
 
 // Start the server
