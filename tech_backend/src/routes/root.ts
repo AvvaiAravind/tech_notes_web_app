@@ -6,7 +6,7 @@ const { __dirname } = getPathInfo(import.meta.url);
 
 const router = Router();
 
-router.get(["/", "index", "/index.html"], (_req, res) => {
+router.get(["/", "/index", "/index.html"], (_req, res) => {
   res.sendFile(path.join(__dirname, "..", "views", "index.html"));
 });
 

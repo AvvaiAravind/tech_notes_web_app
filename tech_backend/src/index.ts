@@ -1,5 +1,7 @@
 import express from "express";
 import path from "path";
+import errHandler from "./middleware/errorHandler.js";
+import { logger } from "./middleware/logger.js";
 import root from "./routes/root.js";
 import getPathInfo from "./utils/pathHelper.js";
 
@@ -10,6 +12,7 @@ const PORT = process.env.PORT || 3500;
 
 // Middleware
 
+app.use(logger);
 // Middleware to parse JSON
 app.use(express.json());
 // Middleware for giving static files
@@ -19,6 +22,10 @@ app.use("/", express.static(path.join(__dirname, "..", "public")));
 app.use("/", root);
 
 // 404 route
+
+
+app.use(errHandler);
+
 app.all(/.*/, (req, res) => {
   res.status(404);
   if (req.accepts("html")) {
