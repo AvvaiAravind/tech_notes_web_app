@@ -1,3 +1,5 @@
+import cookieParser from "cookie-parser";
+import cors from "cors";
 import express from "express";
 import path from "path";
 import errHandler from "./middleware/errorHandler.js";
@@ -12,19 +14,21 @@ const PORT = process.env.PORT || 3500;
 
 // Middleware
 
+//cors
+app.use(cors());
+//req logger
 app.use(logger);
 // Middleware to parse JSON
 app.use(express.json());
-// Middleware for giving static files
+// cookie parser
+app.use(cookieParser())
+// Middleware for giving  files
 app.use("/", express.static(path.join(__dirname, "..", "public")));
 
 // Basic route to test the server
 app.use("/", root);
 
 // 404 route
-
-
-app.use(errHandler);
 
 app.all(/.*/, (req, res) => {
   res.status(404);
@@ -36,6 +40,8 @@ app.all(/.*/, (req, res) => {
     res.type("txt").send("404 Not Found");
   }
 });
+
+app.use(errHandler);
 
 // Start the server
 app.listen(PORT, () => {
