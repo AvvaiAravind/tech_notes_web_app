@@ -3,10 +3,10 @@ import cors from "cors";
 import express from "express";
 import path from "path";
 import corsOptions from "./config/corsOptions.js";
+import errHandler from "./middleware/errorHandler.js";
 import { logger } from "./middleware/logger.js";
 import root from "./routes/root.js";
 import getPathInfo from "./utils/pathHelper.js";
-import errHandler from "./middleware/errorHandler.js";
 
 const { __dirname } = getPathInfo(import.meta.url);
 
@@ -21,6 +21,7 @@ app.use(cors(corsOptions));
 app.use(logger);
 // Middleware to parse JSON
 app.use(express.json());
+app.use(express.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 // cookie parser
 app.use(cookieParser());
 // Middleware for giving  files
