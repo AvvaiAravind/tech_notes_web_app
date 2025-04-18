@@ -1,10 +1,12 @@
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import express from "express";
+import mongoose, { Error } from "mongoose";
 import path from "path";
 import corsOptions from "./config/corsOptions.js";
+import connectDB from "./config/dbConn.js";
 import errHandler from "./middleware/errorHandler.js";
-import { logger } from "./middleware/logger.js";
+import { logEvents, logger } from "./middleware/logger.js";
 import root from "./routes/root.js";
 import getPathInfo from "./utils/pathHelper.js";
 
@@ -13,6 +15,8 @@ const { __dirname } = getPathInfo(import.meta.url);
 const app = express();
 const PORT = process.env.PORT || 3500;
 
+// connect db
+connectDB();
 // Middleware
 
 //cors
@@ -41,6 +45,20 @@ app.all(/.*/, (req, res, next) => {
 app.use(errHandler);
 
 // Start the server
-app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+mongoose.connection.once("open", () => {
+  console.log("Connected to MongoDB");
+  app.listen(PORT, () => {
+    console.log(`Server is running on http://localhost:${PORT}`);
+  });
 });
+
+mongoose.connection.on(
+  "error",
+  (err: Error & Partial<NodeJS.ErrnoException>) => {
+    console.log(err);
+    logEvents(
+      `Message: ${err.message}, Name: ${err.name}, Code: ${err.code}, Syscall: ${err.syscall}, Hostname: ${"hostname" in err ? err.hostname : "N/A"}`,
+      "mongoErrLog.log"
+    );
+  }
+);
