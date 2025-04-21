@@ -5,6 +5,16 @@ import { logEvents } from "./logger";
 
 const {__dirname} = getPathInfo(import.meta.url)
 
+const sendResponse = (req: Request, res: Response) => {
+  if (req.accepts("html")) {
+    res.sendFile(path.join(__dirname, "..", "views", "404.html"));
+  } else if (req.accepts("json")) {
+    res.json({ error: "404 Not Found" });
+  } else {
+    res.type("txt").send("404 Not Found");
+  }
+};
+
 const errHandler = (err: Error, req: Request, res: Response, _next: NextFunction) => {
   logEvents(
     `${err.name}: ${err.message}\t${req.method}\t${req.url}\t${req.headers?.origin}`,
@@ -13,13 +23,9 @@ const errHandler = (err: Error, req: Request, res: Response, _next: NextFunction
   console.error(err.stack);
   const status = res.statusCode ? res.statusCode : 500; // internal server error
 
-  if (req.accepts("html")) {
-      res.sendFile(path.join(__dirname,"..", "views", "404.html"));
-    } else if (req.accepts("json")) {
-      res.json({ error: "404 Not Found" });
-    } else {
-      res.type("txt").send("404 Not Found");
-    }
+ sendResponse(req, res)
 };
 
-export default errHandler
+
+
+export default errHandler;
