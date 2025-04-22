@@ -1,5 +1,5 @@
 import { Document, model, Schema, Types } from "mongoose";
-import { assignTicket } from "../utils/ticketAssignerUtils";
+import { assignTicket } from "../utils/ticketAssigner";
 
 interface INote extends Document {
   user: Types.ObjectId;
