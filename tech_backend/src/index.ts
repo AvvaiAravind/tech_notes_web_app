@@ -5,10 +5,10 @@ import mongoose, { Error } from "mongoose";
 import path from "path";
 import corsOptions from "./config/corsOptions.js";
 import connectDB from "./config/dbConn.js";
-import errHandler from "./middleware/errorHandler.js";
-import { logger } from "./middleware/logger.js";
-import root from "./routes/root.js";
-import mongooseConnectionErrorHandler from "./utils/mongooseErrorHandler.js";
+import errHandler from "./middleware/errorHandler.middleware.js";
+import { logger } from "./middleware/logger.middlewar.js";
+import rootRouter from "./routes/root.routes.js";
+import mongooseConnectionErrorHandler from "./utils/mongooseErrorHandlerUtils.js";
 import getPathInfo from "./utils/pathHelper.js";
 
 const { __dirname } = getPathInfo(import.meta.url);
@@ -33,7 +33,8 @@ app.use(cookieParser());
 app.use("/", express.static(path.join(__dirname, "..", "public")));
 
 // Basic route to test the server
-app.use("/", root);
+app.use("/", rootRouter);
+app.use("/users");
 
 // 404 route
 

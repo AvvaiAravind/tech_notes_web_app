@@ -1,9 +1,9 @@
 import { NextFunction, Request, Response } from "express";
 import path from "path";
 import getPathInfo from "../utils/pathHelper";
-import { logEvents } from "./logger";
+import { logEvents } from "./logger.middlewar";
 
-const {__dirname} = getPathInfo(import.meta.url)
+const { __dirname } = getPathInfo(import.meta.url);
 
 const sendResponse = (req: Request, res: Response) => {
   if (req.accepts("html")) {
@@ -15,7 +15,12 @@ const sendResponse = (req: Request, res: Response) => {
   }
 };
 
-const errHandler = (err: Error, req: Request, res: Response, _next: NextFunction) => {
+const errHandler = (
+  err: Error,
+  req: Request,
+  res: Response,
+  _next: NextFunction
+) => {
   logEvents(
     `${err.name}: ${err.message}\t${req.method}\t${req.url}\t${req.headers?.origin}`,
     "errLog.log"
@@ -23,9 +28,7 @@ const errHandler = (err: Error, req: Request, res: Response, _next: NextFunction
   console.error(err.stack);
   const status = res.statusCode ? res.statusCode : 500; // internal server error
 
- sendResponse(req, res)
+  sendResponse(req, res);
 };
-
-
 
 export default errHandler;

@@ -1,4 +1,4 @@
-import { logEvents } from "../middleware/logger";
+import { logEvents } from "../middleware/logger.middlewar";
 
 const mongooseConnectionErrorHandler = (
   err: Error & Partial<NodeJS.ErrnoException>
