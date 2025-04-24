@@ -6,10 +6,10 @@ import path from "path";
 import corsOptions from "./config/corsOptions.js";
 import connectDB from "./config/dbConn.js";
 import errHandler from "./middleware/errorHandler.middleware.js";
-import { logger } from "./middleware/logger.middlewar.js";
+import { logger } from "./middleware/logger.middleware.js";
 import rootRouter from "./routes/root.routes.js";
-import mongooseConnectionErrorHandler from "./utils/mongooseErrorHandler.js";
-import getPathInfo from "./utils/pathHelper.js";
+import { mongooseConnectionErrorHandler } from "./utils/mongooseErrorHandler.js";
+import { getPathInfo } from "./utils/pathHelper.js";
 
 const { __dirname } = getPathInfo(import.meta.url);
 

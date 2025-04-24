@@ -1,6 +1,6 @@
-import { logEvents } from "../middleware/logger.middlewar";
+import { logEvents } from "../middleware/logger.middleware";
 
-const mongooseConnectionErrorHandler = (
+export const mongooseConnectionErrorHandler = (
   err: Error & Partial<NodeJS.ErrnoException>
 ) => {
   logEvents(
@@ -8,5 +8,3 @@ const mongooseConnectionErrorHandler = (
     "mongoErrLog.log"
   );
 };
-
-export default mongooseConnectionErrorHandler;

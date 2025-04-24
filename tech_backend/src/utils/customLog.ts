@@ -1,9 +1,18 @@
 export const customConsoleLog = (
-  contentToBeLogged: any,
+  contentToBeLogged: unknown,
   description?: string
 ) => {
-  console.log("\n===========Start============\n");
-  description && console.log(description, "\n");
-  console.log(contentToBeLogged);
-  console.log("\n===========End============\n");
+  try {
+    console.log(`
+      =========== Start ===========
+      Description: ${description}
+
+      Content: 
+      ${typeof contentToBeLogged === "object" ? JSON.stringify(contentToBeLogged, null, 2) : contentToBeLogged}
+
+      =========== End ===========
+    `);
+  } catch (error) {
+    console.error("Error logging content:", error);
+  }
 };

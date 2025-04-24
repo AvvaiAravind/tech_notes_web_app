@@ -2,7 +2,8 @@ import bcrypt from "bcrypt";
 import { NextFunction, Request, Response } from "express";
 import z from "zod";
 import User from "../models/user.model";
-import catchAsync from "../utils/catchAsyncError";
+import {catchAsync} from "../utils/catchAsyncError";
+import { errorSender, getStackTrace } from "../utils/errorSender";
 
 // @desc Get all users
 // @route Get /users
@@ -25,7 +26,7 @@ const getAllUsers = catchAsync(
 const createNewUserSchema = z.object({
   username: z.string().min(3, "Username must be at least 3 characters"),
   password: z.string().min(6, "Password must be at least 6 characters"),
-  roles: z.array(z.string().nonempty("At least one role is required")),
+  roles: z.array(z.string().optional().default("Employee")),
 });
 
 type createNewUserBody = z.infer<typeof createNewUserSchema>;
@@ -39,10 +40,14 @@ const createNewUser = catchAsync(
     const validationResult = createNewUserSchema.safeParse(req.body);
 
     if (!validationResult.success) {
-      return res.status(400).json({
-        message: "Validation field",
-        error: validationResult.error.flatten().fieldErrors,
-      });
+      return next(
+        errorSender({
+          statusCode: 400,
+          message: "Validation failed",
+          data: validationResult.error.flatten().fieldErrors,
+          stackTrace: getStackTrace(),
+        })
+      );
     }
     const { username, password, roles } = validationResult.data;
 
@@ -50,7 +55,14 @@ const createNewUser = catchAsync(
     const duplicate = await User.findOne({ username }).lean().exec();
 
     if (duplicate) {
-      return res.status(409).json({ message: "Duplicate username" });
+      return next(
+        errorSender({
+          statusCode: 409,
+          message: "Duplicate username",
+          data: duplicate,
+          stackTrace: getStackTrace(),
+        })
+      );
     }
 
     // hash password

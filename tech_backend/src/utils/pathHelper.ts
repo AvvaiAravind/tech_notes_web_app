@@ -7,10 +7,9 @@ type PathInfo = {
 };
 
 
-const getPathInfo = (metaUrl: string): PathInfo => {
+export const getPathInfo = (metaUrl: string): PathInfo => {
   const __filename = fileURLToPath(metaUrl);
   const __dirname = dirname(__filename);
   return { __filename, __dirname };
 };
 
-export default getPathInfo;
