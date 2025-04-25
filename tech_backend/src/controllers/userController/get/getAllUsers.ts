@@ -2,8 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import User from "../../../models/user.model";
 import { catchAsync } from "../../../utils/catchAsyncError";
 import { errorSender } from "../../../utils/errorSender";
-
-
+import { generateResponse } from "../../../utils/generateResponse";
 
 const getAllUsers = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -17,7 +16,11 @@ const getAllUsers = catchAsync(
         })
       );
     }
-    res.json(users);
+    return generateResponse({
+      res,
+      message: "Users retrieved successfully",
+      data: users,
+    });
   }
 );
 

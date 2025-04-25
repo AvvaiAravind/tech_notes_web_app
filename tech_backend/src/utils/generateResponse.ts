@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 
 type GenerateResponseParamsType = {
-  req: Request;
   res: Response;
   message: string;
   status?: number;
