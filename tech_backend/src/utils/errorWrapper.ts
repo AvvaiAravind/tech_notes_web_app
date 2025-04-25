@@ -7,7 +7,8 @@ export class AppError extends Error {
     public statusCode: number,
     public devMessage?: string,
     public userMessage?: string,
-    public data?: unknown
+    public data?: unknown,
+    public metaData?: unknown 
   ) {
     super(devMessage);
     Object.setPrototypeOf(this, new.target.prototype);
@@ -63,3 +64,32 @@ export function errorWrapper(error: AppError, statusCode: number = 500) {
     error.data
   );
 }  */
+
+/* import { Response } from "express";
+import { ICustomRequest } from "./customTypes.js";
+import { getUserWithOrg } from "./user.js";
+import { generateToken } from "./generateTokens.js";
+
+type generateResponseType = {
+  req: ICustomRequest;
+  res: Response;
+  status: number;
+  jsonMessage: string;
+  data?: any;
+};
+
+export const generateResponse = async ({
+  req,
+  res,
+  status,
+  jsonMessage,
+  data = [],
+}: generateResponseType) => {
+  const userId = req?.user?._id;
+  const userDataWithOrg = await getUserWithOrg(userId);
+  const accessToken = generateToken("access", userDataWithOrg[0], req);
+  return res
+    .header("Authorization", accessToken as string)
+    .status(status)
+    .json({ message: jsonMessage, data });
+}; */

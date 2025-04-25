@@ -1,5 +1,5 @@
 import { Router } from "express";
-import usersController from "../controllers/users.controller";
+import usersController from "../controllers/userController/users.controller";
 import getPathInfo from "../utils/pathHelper";
 
 const { __dirname } = getPathInfo(import.meta.url);

@@ -6,7 +6,8 @@ type ErrorSenderType = {
   message: string;
   devMessage?: string | null;
   stackTrace?: string | null;
-  data?: any;
+  data?: unknown;
+  metaData?: unknown;
 };
 
 export const getStackTrace = () => {
@@ -30,8 +31,15 @@ export const errorSender = ({
   devMessage = null,
   stackTrace,
   data,
+  metaData,
 }: ErrorSenderType) => {
-  const error = new AppError(statusCode, devMessage || message, message, data);
+  const error = new AppError(
+    statusCode,
+    devMessage || message,
+    message,
+    data,
+    metaData
+  );
 
   // Log stack trace only in development
   if (process.env.NODE_ENV === "development" && stackTrace) {

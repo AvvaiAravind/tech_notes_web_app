@@ -1,23 +1,12 @@
-import bcrypt from "bcrypt";
-import { NextFunction, Request, Response } from "express";
-import z from "zod";
-import User from "../models/user.model";
-import {catchAsync} from "../utils/catchAsyncError";
-import { errorSender, getStackTrace } from "../utils/errorSender";
-
 // @desc Get all users
 // @route Get /users
-// @access private
 
-const getAllUsers = catchAsync(
-  async (req: Request, res: Response, next: NextFunction) => {
-    const users = await User.find().select("-password").lean();
-    if (!users) {
-      return res.status(400).json({ message: "No users found" });
-    }
-    res.json(users);
-  }
-);
+import bcrypt from "bcrypt";
+import { NextFunction, Request, Response } from "express";
+import { z } from "zod";
+import User from "../../../models/user.model";
+import { catchAsync } from "../../../utils/catchAsyncError";
+import { errorSender, getStackTrace } from "../../../utils/errorSender";
 
 // @desc create user
 // @route post /users
@@ -80,20 +69,4 @@ const createNewUser = catchAsync(
   }
 );
 
-// @desc update user
-// @route patch /users
-// @access private
-
-const updateUser = catchAsync(
-  async (req: Request, res: Response, next: NextFunction) => {}
-);
-
-// @desc delete user
-// @route delete /users
-// @access private
-
-const deleteUser = catchAsync(
-  async (req: Request, res: Response, next: NextFunction) => {}
-);
-
-export default { getAllUsers, createNewUser, updateUser, deleteUser };
+export default createNewUser;
