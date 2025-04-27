@@ -4,7 +4,7 @@ import { existsSync } from "fs";
 import fsPromises from "fs/promises";
 import path from "path";
 import { v4 as uuid } from "uuid";
-import getPathInfo from "../utils/pathHelper";
+import { getPathInfo } from "../utils/pathHelper";
 import { customConsoleLog } from "../utils/customLog";
 
 const { __dirname } = getPathInfo(import.meta.url);

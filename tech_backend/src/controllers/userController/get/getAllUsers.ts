@@ -7,8 +7,10 @@ import { generateResponse } from "../../../utils/generateResponse";
 const getAllUsers = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     // find the users if no return error through next
-    const users = await User.find().select("-password").lean();
-    if (!users) {
+    const users: Array<Record<string, any>> = await User.find()
+      .select("-password")
+      .lean();
+    if (!users || users.length === 0) {
       return next(
         errorSender({
           statusCode: 400,

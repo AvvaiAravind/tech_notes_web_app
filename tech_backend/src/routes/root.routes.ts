@@ -1,6 +1,6 @@
 import { Router } from "express";
 import path from "path";
-import getPathInfo from "../utils/pathHelper";
+import { getPathInfo } from "../utils/pathHelper";
 
 const { __dirname } = getPathInfo(import.meta.url);
 

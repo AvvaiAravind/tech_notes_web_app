@@ -1,16 +1,14 @@
 import { Router } from "express";
 import usersController from "../controllers/userController/users.controller";
-import getPathInfo from "../utils/pathHelper";
-
-const { __dirname } = getPathInfo(import.meta.url);
 
 const router = Router();
 
-router
-  .route("/")
-  .get(usersController.getAllUsers)
-  .post(usersController.createNewUser)
-  .patch(usersController.updateUser)
-  .delete(usersController.deleteUser);
+router.get("/getAllUsers", usersController.getAllUsers);
+
+router.post("/createNewUser", usersController.createNewUser);
+
+router.patch("/updateUser/:_id", usersController.updateUser);
+
+router.delete("/deleteUser/:_id", usersController.deleteUser);
 
 export default router;

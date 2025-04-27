@@ -8,6 +8,7 @@ import connectDB from "./config/dbConn.js";
 import errHandler from "./middleware/errorHandler.middleware.js";
 import { logger } from "./middleware/logger.middleware.js";
 import rootRouter from "./routes/root.routes.js";
+import usersRouter from "./routes/users.routes.js";
 import { mongooseConnectionErrorHandler } from "./utils/mongooseErrorHandler.js";
 import { getPathInfo } from "./utils/pathHelper.js";
 
@@ -34,11 +35,11 @@ app.use("/", express.static(path.join(__dirname, "..", "public")));
 
 // Basic route to test the server
 app.use("/", rootRouter);
-app.use("/users");
+app.use("/users", usersRouter);
 
 // 404 route
 
-app.all(/.*/, (req, res, next) => {
+app.all(/.*/, (_req, res, next) => {
   res.status(404);
   const error = new Error("404 Not Found");
   next(error);

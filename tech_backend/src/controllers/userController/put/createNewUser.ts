@@ -1,21 +1,21 @@
-// @desc Get all users
-// @route Get /users
-
 import bcrypt from "bcrypt";
 import { NextFunction, Request, Response } from "express";
 import { z } from "zod";
 import User from "../../../models/user.model";
 import { catchAsync } from "../../../utils/catchAsyncError";
 import { errorSender, getStackTrace } from "../../../utils/errorSender";
+import { generateResponse } from "../../../utils/generateResponse";
 
 // @desc create user
 // @route post /users
 // @access private
 
+export const RoleEnum = z.enum(["Employee", "Manager", "Admin"]);
+
 const createNewUserSchema = z.object({
   username: z.string().min(3, "Username must be at least 3 characters"),
   password: z.string().min(6, "Password must be at least 6 characters"),
-  roles: z.array(z.string().optional().default("Employee")),
+  roles: z.array(RoleEnum).nonempty("At least one role is required"),
 });
 
 type createNewUserBody = z.infer<typeof createNewUserSchema>;
@@ -38,6 +38,7 @@ const createNewUser = catchAsync(
         })
       );
     }
+
     const { username, password, roles } = validationResult.data;
 
     // check duplicate
@@ -62,9 +63,12 @@ const createNewUser = catchAsync(
     const user = await User.create(userObject);
 
     if (user) {
-      res.status(201).json({ message: "New user ${username} created" });
-    } else {
-      res.status(400).json({ message: "Invalid user data received" });
+      return generateResponse({
+        res,
+        statusCode: 201,
+        message: `New user ${username} created`,
+        data: user,
+      });
     }
   }
 );

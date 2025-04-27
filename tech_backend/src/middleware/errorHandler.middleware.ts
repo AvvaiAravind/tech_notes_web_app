@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import path from "path";
-import getPathInfo from "../utils/pathHelper";
+import { getPathInfo } from "../utils/pathHelper";
 import { logEvents } from "./logger.middleware";
 
 const { __dirname } = getPathInfo(import.meta.url);

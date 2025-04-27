@@ -3,19 +3,19 @@ import { Request, Response } from "express";
 type GenerateResponseParamsType = {
   res: Response;
   message: string;
-  status?: number;
+  statusCode?: number;
   data: unknown;
   metaData?: unknown;
 };
 
 export const generateResponse = async ({
   res,
-  status = 200,
+  statusCode = 200,
   message,
   data = null,
   metaData = null,
 }: GenerateResponseParamsType) => {
-  return res.status(status).json({
+  return res.status(statusCode).json({
     status: "success",
     message,
     data,
