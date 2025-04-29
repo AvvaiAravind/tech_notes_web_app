@@ -10,7 +10,7 @@ const getAllUsers = catchAsync(
     const users: Array<Record<string, any>> = await User.find()
       .select("-password")
       .lean();
-    if (!users || users.length === 0) {
+    if (!users) {
       return next(
         errorSender({
           statusCode: 400,
