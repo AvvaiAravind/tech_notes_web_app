@@ -36,7 +36,7 @@ const logger = (req: Request, res: Response, next: NextFunction) => {
   logEvents(`${req.method}\t${req.url}\t${req.headers.origin}`, "reqLog.log");
 
  customConsoleLog(
-   `\n📝 Request Log:\n\t- Time: ${time}\n\t- Method: ${method}\n\t- URL: ${url}\n\t- Path: ${path} \n`
+   `\n📝 Request Log:\n\t- Time: ${time}\n\t- Method: ${method}\n\t- URL: ${url}\n\t- Path: ${path} \n`, "Request Log"
  );
   
   next();

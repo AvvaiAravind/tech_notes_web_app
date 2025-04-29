@@ -11,6 +11,7 @@ import rootRouter from "./routes/root.routes.js";
 import usersRouter from "./routes/users.routes.js";
 import { mongooseConnectionErrorHandler } from "./utils/mongooseErrorHandler.js";
 import { getPathInfo } from "./utils/pathHelper.js";
+import notFoundHandler from "./middleware/notFoundHandler.middleware.js";
 
 const { __dirname } = getPathInfo(import.meta.url);
 
@@ -38,12 +39,13 @@ app.use("/", rootRouter);
 app.use("/users", usersRouter);
 
 // 404 route
+app.use(notFoundHandler)
 
-app.all(/.*/, (_req, res, next) => {
-  res.status(404);
-  const error = new Error("404 Not Found");
-  next(error);
-});
+// app.all(/.*/, (_req, res, next) => {
+//   res.status(404);
+//   const error = new Error("404 Not Found");
+//   next(error);
+// });
 
 app.use(errHandler);
 

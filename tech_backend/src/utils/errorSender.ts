@@ -30,8 +30,8 @@ export const errorSender = ({
   message = "Something Went Wrong",
   devMessage = null,
   stackTrace,
-  data,
-  metaData,
+  data = null,
+  metaData = null,
 }: ErrorSenderType) => {
   const error = new AppError(
     statusCode,
@@ -41,11 +41,11 @@ export const errorSender = ({
     metaData
   );
 
-  // Log stack trace only in development
-  if (process.env.NODE_ENV === "development" && stackTrace) {
-    customConsoleLog(stackTrace, "Stack Trace in the error handler function");
-  }
+  // // Log stack trace only in development
+  // if (process.env.NODE_ENV === "development" && stackTrace) {
+  //   customConsoleLog(stackTrace, "Stack Trace in the error handler function");
+  // }
 
-  customConsoleLog(message, "Error Message---------");
+  // customConsoleLog(message, "Error Message---------");
   return error;
 };
