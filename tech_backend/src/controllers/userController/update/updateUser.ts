@@ -5,7 +5,7 @@ import { catchAsync } from "../../../utils/catchAsyncError";
 import { errorSender, getStackTrace } from "../../../utils/errorSender";
 import { generateResponse } from "../../../utils/generateResponse";
 import { objectIdSchema } from "../../../utils/validationSchema";
-import { RoleEnum } from "../put/createNewUser";
+import { RoleEnum } from "../post/createNewUser";
 
 // @desc update user
 // @route patch /users/:_id
