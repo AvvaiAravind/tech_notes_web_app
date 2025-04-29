@@ -12,6 +12,10 @@ import { RoleEnum } from "../post/createNewUser";
 // @access private
 
 const updateAUserSchema = z.object({
+  userId: z
+    .string()
+    .min(5, "User ID must be at least 5 characters")
+    .max(10, "User ID must be at most 20 characters"),
   username: z.string().min(3, "Username must be at least 3 characters"),
   roles: z.array(RoleEnum).nonempty("At least one role is required"),
   active: z.boolean(),
@@ -66,7 +70,7 @@ const updateUser = catchAsync(
       );
     }
 
-    const { username, roles, active, password } = validatedBody.data;
+    const { username, userId, roles, active, password } = validatedBody.data;
     const { _id } = validatedParams.data;
 
     const user = await User.findById(_id).exec();
@@ -81,6 +85,7 @@ const updateUser = catchAsync(
     }
 
     user.username = username;
+    user.userId = userId;
     user.roles = roles;
     user.active = active;
 
