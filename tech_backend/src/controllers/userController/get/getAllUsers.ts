@@ -7,9 +7,10 @@ import { generateResponse } from "../../../utils/generateResponse";
 const getAllUsers = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     // find the users if no return error through next
-    const users: Array<Record<string, any>> = await User.find()
+    const users = await User.find()
       .select("-password")
       .lean();
+    
     if (!users) {
       return next(
         errorSender({
@@ -18,6 +19,7 @@ const getAllUsers = catchAsync(
         })
       );
     }
+    
     return generateResponse({
       res,
       message: "Users retrieved successfully",

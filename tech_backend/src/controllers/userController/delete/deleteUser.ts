@@ -26,15 +26,12 @@ const deleteUser = catchAsync(
     const validatedParams = deleteUserSchema.safeParse(req.params);
 
     if (!validatedParams.success) {
-      const { formErrors, fieldErrors } = validatedParams.error.flatten();
+      const { fieldErrors } = validatedParams.error.flatten();
       return next(
         errorSender({
           statusCode: 400,
           message: "Validation Id failed",
-          data: {
-            formErrors,
-            fieldErrors,
-          },
+          data: fieldErrors,
           stackTrace: getStackTrace(),
         })
       );
@@ -42,9 +39,9 @@ const deleteUser = catchAsync(
 
     const { _id } = validatedParams.data;
 
-    const notes = await Note.findOne({ user: _id }).lean().exec;
+    const note = await Note.findOne({ user: _id }).lean().exec();
 
-    if (notes?.length) {
+    if (note) {
       return next(
         errorSender({
           statusCode: 400,
@@ -53,9 +50,9 @@ const deleteUser = catchAsync(
       );
     }
 
-    const user = await User.findById(_id).exec();
+    const userToDelete = await User.findById(_id).select("-password").exec();
 
-    if (!user) {
+    if (!userToDelete) {
       return next(
         errorSender({
           statusCode: 404,
@@ -64,12 +61,12 @@ const deleteUser = catchAsync(
       );
     }
 
-    const result = await user.deleteOne();
+    const result = await userToDelete.deleteOne();
 
     return generateResponse({
       res,
-      message: `${user.username} with ${user._id} updated successfully`,
-      data: result,
+      message: `${userToDelete.username} with ${userToDelete._id} deleted successfully`,
+      data: userToDelete,
     });
   }
 );

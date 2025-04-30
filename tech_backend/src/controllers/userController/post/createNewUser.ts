@@ -13,10 +13,7 @@ import { generateResponse } from "../../../utils/generateResponse";
 export const RoleEnum = z.enum(["Employee", "Manager", "Admin"]);
 
 const createNewUserSchema = z.object({
-  userId: z
-    .string()
-    .min(5, "User ID must be at least 5 characters")
-    .max(10, "User ID must be at most 20 characters"),
+  userId: z.string().email(),
   username: z.string().min(3, "Username must be at least 3 characters"),
   password: z.string().min(6, "Password must be at least 6 characters"),
   roles: z.array(RoleEnum).nonempty("At least one role is required"),
@@ -43,19 +40,16 @@ const createNewUser = catchAsync(
       );
     }
 
-    const { username, userId, password, roles } = validationResult.data;
+    const { userId, username, password, roles } = validationResult.data;
 
     // check duplicate
-    const duplicate = await User.findOne({ userId })
-      .select("-password")
-      .lean()
-      .exec();
+    const duplicate = await User.findOne({ userId }).select("-password").lean();
 
     if (duplicate) {
       return next(
         errorSender({
           statusCode: 409,
-          message: "Duplicate username",
+          message: "Duplicate userId. User ID must be unique",
           data: null,
           stackTrace: getStackTrace(),
         })

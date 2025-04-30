@@ -12,13 +12,13 @@ import { RoleEnum } from "../post/createNewUser";
 // @access private
 
 const updateAUserSchema = z.object({
-  userId: z
+  userId: z.string().email().optional(),
+  username: z
     .string()
-    .min(5, "User ID must be at least 5 characters")
-    .max(10, "User ID must be at most 20 characters"),
-  username: z.string().min(3, "Username must be at least 3 characters"),
-  roles: z.array(RoleEnum).nonempty("At least one role is required"),
-  active: z.boolean(),
+    .min(3, "Username must be at least 3 characters")
+    .optional(),
+  roles: z.array(RoleEnum).nonempty("At least one role is required").optional(),
+  active: z.boolean().optional(),
   password: z
     .string()
     .min(6, "Password must be at least 6 characters")
@@ -42,15 +42,12 @@ const updateUser = catchAsync(
     const validatedParams = updateUserIdSchema.safeParse(req.params);
 
     if (!validatedParams.success) {
-      const { formErrors, fieldErrors } = validatedParams.error.flatten();
+      const { fieldErrors } = validatedParams.error.flatten();
       return next(
         errorSender({
           statusCode: 400,
           message: "Validation of Id failed",
-          data: {
-            formErrors,
-            fieldErrors,
-          },
+          data: fieldErrors,
           stackTrace: getStackTrace(),
         })
       );
@@ -84,16 +81,14 @@ const updateUser = catchAsync(
       );
     }
 
-    user.username = username;
-    user.userId = userId;
-    user.roles = roles;
-    user.active = active;
-
-    if (password) {
-      user.password = password;
-    }
+    username && (user.username = username);
+    userId && (user.userId = userId);
+    roles && (user.roles = roles);
+    active && (user.active = active);
+    password && (user.password = password);
 
     const updatedUser = await user.save();
+
     return generateResponse({
       res,
       message: `${updatedUser.username} is updated successfully`,

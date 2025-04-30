@@ -3,12 +3,14 @@ import usersController from "../controllers/userController/users.controller";
 
 const router = Router();
 
-router.get("/getAllUsers", usersController.getAllUsers);
+router
+  .route("/")
+  .get(usersController.getAllUsers)
+  .post(usersController.createNewUser);
 
-router.post("/createNewUser", usersController.createNewUser);
-
-router.patch("/updateUser/:_id", usersController.updateUser);
-
-router.delete("/deleteUser/:_id", usersController.deleteUser);
+router
+  .route("/:_id")
+  .patch(usersController.updateUser)
+  .delete(usersController.deleteUser);
 
 export default router;
