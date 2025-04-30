@@ -43,7 +43,7 @@ const createNewUser = catchAsync(
     const { userId, username, password, roles } = validationResult.data;
 
     // check duplicate
-    const duplicate = await User.findOne({ userId }).select("-password").lean();
+    const duplicate = await User.findOne({ userId }).lean();
 
     if (duplicate) {
       return next(

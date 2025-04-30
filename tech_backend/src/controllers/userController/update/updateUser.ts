@@ -81,11 +81,11 @@ const updateUser = catchAsync(
       );
     }
 
-    username && (user.username = username);
-    userId && (user.userId = userId);
-    roles && (user.roles = roles);
-    active && (user.active = active);
-    password && (user.password = password);
+    if (typeof userId === "string") user.userId = userId;
+    if (username === "string") user.username = username;
+    if (Array.isArray(roles)) user.roles = roles;
+    if (typeof active === "boolean") user.active = active;
+    if (typeof password === "string") user.password = password;
 
     const updatedUser = await user.save();
 
