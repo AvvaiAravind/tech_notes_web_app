@@ -2,7 +2,7 @@ import { Document, model, Schema, Types } from "mongoose";
 import { assignTicket } from "../utils/ticketAssigner";
 
 interface INote extends Document {
-  user: Types.ObjectId;
+  userId: Types.ObjectId;
   ticket: number;
   title: string;
   content: string;
@@ -13,7 +13,7 @@ interface INote extends Document {
 
 const noteSchema = new Schema<INote>(
   {
-    user: {
+    userId: {
       type: Schema.Types.ObjectId,
       ref: "User",
       required: true,
@@ -21,6 +21,7 @@ const noteSchema = new Schema<INote>(
     ticket: {
       type: Number,
       required: true,
+      unique: true, // <-- Add this to enforce uniqueness at the database level
     },
     title: {
       type: String,

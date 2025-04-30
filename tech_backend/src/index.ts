@@ -12,7 +12,8 @@ import usersRouter from "./routes/users.routes.js";
 import { mongooseConnectionErrorHandler } from "./utils/mongooseErrorHandler.js";
 import { getPathInfo } from "./utils/pathHelper.js";
 import notFoundHandler from "./middleware/notFoundHandler.middleware.js";
-
+import notesRouter from "./routes/notes.routes.js"
+  
 const { __dirname } = getPathInfo(import.meta.url);
 
 const app = express();
@@ -37,6 +38,7 @@ app.use("/", express.static(path.join(__dirname, "..", "public")));
 // Basic route to test the server
 app.use("/", rootRouter);
 app.use("/users", usersRouter);
+app.use("/notes", notesRouter);
 
 // 404 route
 app.use(notFoundHandler)
