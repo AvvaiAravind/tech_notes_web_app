@@ -20,7 +20,7 @@ const noteSchema = new Schema<INote>(
     },
     ticket: {
       type: Number,
-      required: true,
+      //required: true, <-- removed to allow for auto-assignment
       unique: true, // <-- Add this to enforce uniqueness at the database level
     },
     title: {

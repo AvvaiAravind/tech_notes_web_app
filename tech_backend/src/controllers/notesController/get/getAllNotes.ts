@@ -32,6 +32,35 @@ const getAllNotes = catchAsync(
       })
     );
 
+    //optimized way to send the username with notes for future use
+
+    /*
+    const userIds = [...new Set(notes.map((note) => note.userId))];
+    const users = await User.find({ _id: { $in: userIds } })
+      .lean()
+      .exec();
+
+    if (users.length !== userIds.length) {
+      return next(
+        errorSender({
+          statusCode: 400,
+          message: "Some users not found",
+          stackTrace: getStackTrace(),
+        })
+      );
+    }
+
+    const userMap = new Map(
+      users.map((user) => [user._id.toString(), user.username])
+    );
+
+    const notesWithUsername = notes.map((note) => {
+      return {
+        username: userMap.get(note.userId.toString()),
+        ...note,
+      };
+    }); */
+
     return generateResponse({
       res,
       message: "Notes retrieved successfully",
