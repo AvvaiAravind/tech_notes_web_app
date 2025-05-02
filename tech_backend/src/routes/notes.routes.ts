@@ -8,4 +8,8 @@ router
   .get(notesController.getAllNotes)
   .post(notesController.createNewNote);
 
+router
+  .route("/:id")
+  // .patch(notesController.updateNote)
+  .delete(notesController.deleteNote);
 export default router;

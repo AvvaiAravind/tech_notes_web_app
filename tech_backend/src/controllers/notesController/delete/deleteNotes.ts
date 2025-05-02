@@ -1,29 +1,28 @@
 import { NextFunction, Request, Response } from "express";
 import { z } from "zod";
 import Note from "../../../models/note.model";
-import User from "../../../models/user.model";
 import { catchAsync } from "../../../utils/catchAsyncError";
 import { errorSender, getStackTrace } from "../../../utils/errorSender";
 import { generateResponse } from "../../../utils/generateResponse";
 import { objectIdSchema } from "../../../utils/validationSchema";
 
-// @desc delete user
-// @route delete /users/:_id
-// @access private
+// @desc Delete a note
+// @route DELETE /notes
+// @access Private
 
-const deleteUserSchema = z.object({
-  _id: objectIdSchema,
+const deleteNoteSchema = z.object({
+  _id: objectIdSchema, // note id
 });
 
-type deleteUserIdParams = z.infer<typeof deleteUserSchema>;
+type deleteNoteIdParams = z.infer<typeof deleteNoteSchema>;
 
-const deleteUser = catchAsync(
+const deleteNote = catchAsync(
   async (
-    req: Request<deleteUserIdParams, {}, {}, {}>,
+    req: Request<deleteNoteIdParams, {}, {}, {}>,
     res: Response,
     next: NextFunction
   ) => {
-    const validatedParams = deleteUserSchema.safeParse(req.params);
+    const validatedParams = deleteNoteSchema.safeParse(req.params);
 
     if (!validatedParams.success) {
       const { fieldErrors } = validatedParams.error.flatten();
@@ -39,37 +38,25 @@ const deleteUser = catchAsync(
 
     const { _id } = validatedParams.data;
 
-    const note = await Note.findOne({ user: _id }).lean().exec();
+    const note = await Note.findById(_id).exec();
 
-    if (note) {
+    if (!note) {
       return next(
         errorSender({
           statusCode: 400,
-          message: "User has assigned notes",
+          message: "Note not found",
         })
       );
     }
 
-    const userToDelete = await User.findById(_id).select("-password").exec();
-
-    if (!userToDelete) {
-      return next(
-        errorSender({
-          statusCode: 404,
-          message: "User not found",
-        })
-      );
-    }
-
-    const result = await userToDelete.deleteOne();
-
+    const deletedNote = await note.deleteOne();
 
     return generateResponse({
       res,
-      message: `${userToDelete.username} with ${userToDelete._id} deleted successfully`,
-      data: userToDelete,
+      message: `${note.title} with ${note._id} deleted successfully`,
+      data: note,
     });
   }
 );
 
-export default deleteUser;
+export default deleteNote;
