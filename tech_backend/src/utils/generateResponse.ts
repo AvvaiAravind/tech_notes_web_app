@@ -16,7 +16,7 @@ export const generateResponse = async ({
   metaData = null,
 }: GenerateResponseParamsType) => {
   return res.status(statusCode).json({
-    status: "success",
+    success: true,
     message,
     data,
     metaData,

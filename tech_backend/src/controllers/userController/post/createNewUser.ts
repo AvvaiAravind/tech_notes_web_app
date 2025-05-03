@@ -62,17 +62,18 @@ const createNewUser = catchAsync(
     const userObject = { username, userId, password: hashedPwd, roles };
 
     const createdUser = await User.create(userObject);
+    
+    // it is best to send the createdUser because we removed the password from the response in the model
+    // const user = await User.findById(createdUser._id)
+    //   .select("-password")
+    //   .lean();
 
-    const user = await User.findById(createdUser._id)
-      .select("-password")
-      .lean();
-
-    if (user) {
+    if (createdUser) {
       return generateResponse({
         res,
         statusCode: 201,
         message: `New user ${username} created`,
-        data: user,
+        data: createdUser,
       });
     }
   }

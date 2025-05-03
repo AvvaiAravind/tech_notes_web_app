@@ -5,7 +5,7 @@ import { errorSender } from "../../../utils/errorSender";
 import { generateResponse } from "../../../utils/generateResponse";
 
 const getAllUsers = catchAsync(
-  async (req: Request, res: Response, next: NextFunction) => {
+  async (_req: Request, res: Response, next: NextFunction) => {
     // find the users if no return error through next
     const users = await User.find().select("-password").lean();
 
@@ -13,7 +13,7 @@ const getAllUsers = catchAsync(
       return next(
         errorSender({
           statusCode: 400,
-          message: "No User Found",
+          message: "No user found",
         })
       );
     }
