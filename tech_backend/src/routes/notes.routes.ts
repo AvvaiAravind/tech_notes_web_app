@@ -10,6 +10,6 @@ router
 
 router
   .route("/:id")
-  // .patch(notesController.updateNote)
+  .patch(notesController.updateNote)
   .delete(notesController.deleteNote);
 export default router;

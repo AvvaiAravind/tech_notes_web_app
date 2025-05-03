@@ -16,7 +16,9 @@ const createNewNoteSchema = z.object({
     .string()
     .min(5, "Title must be at least 3 characters")
     .max(25, "Title must be at most 25 characters"),
-  content: z.string().min(10, "Content must be at least 10 characters"),
+  content: z
+    .string()
+    .min(10, "Content must be at least 10 characters"),
 });
 
 type createNewNoteBody = z.infer<typeof createNewNoteSchema>;

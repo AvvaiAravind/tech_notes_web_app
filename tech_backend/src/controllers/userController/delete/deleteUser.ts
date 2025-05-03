@@ -63,6 +63,14 @@ const deleteUser = catchAsync(
 
     const result = await userToDelete.deleteOne();
 
+    if (result.deletedCount !== 1) {
+      return next(
+        errorSender({
+          statusCode: 500,
+          message: "User deletion failed",
+        })
+      );
+    }
 
     return generateResponse({
       res,

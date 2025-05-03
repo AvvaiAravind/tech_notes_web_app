@@ -7,7 +7,7 @@ import { generateResponse } from "../../../utils/generateResponse";
 import { objectIdSchema } from "../../../utils/validationSchema";
 
 // @desc Delete a note
-// @route DELETE /notes
+// @route DELETE /notes/:_id
 // @access Private
 
 const deleteNoteSchema = z.object({
@@ -38,9 +38,9 @@ const deleteNote = catchAsync(
 
     const { _id } = validatedParams.data;
 
-    const note = await Note.findById(_id).exec();
+    const noteToDelete = await Note.findById(_id).exec();
 
-    if (!note) {
+    if (!noteToDelete) {
       return next(
         errorSender({
           statusCode: 400,
@@ -49,12 +49,21 @@ const deleteNote = catchAsync(
       );
     }
 
-    const deletedNote = await note.deleteOne();
+    const result = await noteToDelete.deleteOne();
+
+    if (result.deletedCount !== 1) {
+      return next(
+        errorSender({
+          statusCode: 500,
+          message: "Note deletion failed",
+        })
+      );
+    }
 
     return generateResponse({
       res,
-      message: `${note.title} with ${note._id} deleted successfully`,
-      data: note,
+      message: `${noteToDelete.title} with ${noteToDelete._id} deleted successfully`,
+      data: noteToDelete,
     });
   }
 );
