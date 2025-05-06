@@ -1,9 +1,13 @@
-import { configureStore } from "@reduxjs/toolkit";
+import { configureStore, EnhancedStore } from "@reduxjs/toolkit";
+import themeMiddleware from "./middleware/themeMiddleware";
 import themeReducer from "./slices/themeSlice";
 
-export const store = configureStore({
+export const store: EnhancedStore = configureStore({
   reducer: {
     theme: themeReducer,
+  },
+  middleware: (getDefaultMiddleware) => {
+    return getDefaultMiddleware().concat(themeMiddleware);
   },
 });
 

@@ -1,8 +1,7 @@
-
-import { getInitialTheme, selectThemeMode, toggleTheme } from "../../redux/slices/themeSlice";
 import { AppDispatchType } from "@/redux/store";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { selectThemeMode, toggleTheme } from "../../redux/slices/themeSlice";
 
 const Header = () => {
   // redux related
@@ -11,8 +10,11 @@ const Header = () => {
 
   // useEffect
   useEffect(() => {
-    document.documentElement.classList.remove("light", "dark");
-    document.documentElement.classList.add(getInitialTheme());
+    document.documentElement.classList.toggle("dark", currentTheme === "dark");
+    document.documentElement.classList.toggle(
+      "light",
+      currentTheme === "light"
+    );
   }, [currentTheme]);
 
   const handleThemeChange = () => {
@@ -23,7 +25,11 @@ const Header = () => {
   return (
     <header className="sticky top-0">
       <div className="flex h-full w-full justify-end">
-        <button className="text-[var(--color-text)]" type="button" onClick={handleThemeChange}>
+        <button
+          className="text-[var(--color-text)]"
+          type="button"
+          onClick={handleThemeChange}
+        >
           Toggle theme
         </button>
       </div>
