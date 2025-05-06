@@ -2,11 +2,11 @@ import Header from "./components/header/Header";
 
 function App() {
   return (
-    <div className="flex flex-grow flex-col items-center justify-center bg-background">
+    <div className="bg-background scrollbar-thin flex flex-grow flex-col items-center">
       <Header />
-      <p className="p-4 text-center text-5xl text-primary">
+      <div className="text-primary h-[200vh] p-4 text-center text-5xl">
         Vite Template
-      </p>
+      </div>
     </div>
   );
 }

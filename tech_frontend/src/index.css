@@ -4,9 +4,23 @@
 @custom-variant dark (&:is(.dark *));
 
 /* general theme */
+:root {
+  --shadow-custom:
+    0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -2px rgb(0 0 0 / 0.05);
+  --header-color: oklch(0.96 0.005 260);
+}
+
+.dark {
+  --shadow-custom:
+    0 10px 15px -3px rgb(255 255 255 / 0.1),
+    0 4px 6px -2px rgb(255 255 255 / 0.05);
+  --header-color: oklch(0.25 0.005 260);
+}
 
 @theme {
   --font-inter: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  --shadow-custom: var(--shadow-custom);
+  --color-header: var(var(--header-color));
 }
 
 @utility font-synthesis {
@@ -19,7 +33,7 @@
 
 @layer base {
   html {
-    @apply font-inter antialiased font-synthesis text-rendering;
+    @apply scroll-smooth font-inter antialiased font-synthesis text-rendering;
   }
 
   body {
@@ -29,7 +43,6 @@
   #root {
     @apply flex flex-grow;
   }
-
 }
 
 /* shadCN */
