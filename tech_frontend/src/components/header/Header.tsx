@@ -21,7 +21,7 @@ const Header = () => {
   };
 
   return (
-    <header className="sticky top-0 z-10 w-full border-b-1 border-b-accent-foreground bg-background p-2 shadow-custom">
+    <header className="sticky top-0 z-10 w-full bg-background p-2 shadow-custom">
       <div className="flex h-full w-full justify-end">
         <Button
           className="cursor-pointer rounded-full"
