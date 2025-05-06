@@ -1,14 +1,13 @@
 import { useEffect } from "react";
 import { MdOutlineDarkMode, MdOutlineLightMode } from "react-icons/md";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatchType } from "src/redux/store";
+import { useAppDispatch, useAppSelector } from "src/hooks/reduxHooks";
 import { selectThemeMode, toggleTheme } from "../../redux/slices/themeSlice";
 import { Button } from "../ui/button";
 
 const Header = () => {
   // redux related
-  const dispatch = useDispatch<AppDispatchType>();
-  const currentTheme = useSelector(selectThemeMode);
+  const dispatch = useAppDispatch();
+  const currentTheme = useAppSelector(selectThemeMode);
 
   // useEffect
   useEffect(() => {
