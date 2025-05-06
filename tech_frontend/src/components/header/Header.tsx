@@ -1,7 +1,8 @@
-import { AppDispatchType } from "@/redux/store";
+
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { selectThemeMode, toggleTheme } from "../../redux/slices/themeSlice";
+import { AppDispatchType } from "src/redux/store";
 
 const Header = () => {
   // redux related

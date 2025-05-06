@@ -1,4 +1,5 @@
 import { Middleware } from "@reduxjs/toolkit";
+import STORAGE_KEYS from "src/constants/storageKeys";
 import { ReduxStateType } from "../store";
 
 const themeMiddleware: Middleware<{}, ReduxStateType> =
@@ -13,7 +14,7 @@ const themeMiddleware: Middleware<{}, ReduxStateType> =
 
         // Update local storage
         if (typeof window !== "undefined") {
-          localStorage.setItem("theme", mode);
+          localStorage.setItem(STORAGE_KEYS.theme, mode);
         }
       }
     }

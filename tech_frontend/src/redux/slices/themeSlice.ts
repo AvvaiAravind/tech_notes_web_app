@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { ReduxStateType } from "../store";
+import STORAGE_KEYS from "src/constants/storageKeys";
 
 export type ThemeMode = "light" | "dark";
 
@@ -13,7 +14,9 @@ interface ThemeState {
 
 export const getInitialTheme = (): ThemeMode => {
   if (typeof window !== "undefined") {
-    const userPreference = localStorage.getItem("theme") as ThemeMode | null;
+    const userPreference = localStorage.getItem(
+      STORAGE_KEYS.theme
+    ) as ThemeMode | null;
     if (userPreference && ["light", "dark"].includes(userPreference)) {
       return userPreference;
     }
