@@ -1,8 +1,9 @@
-
 import { useEffect } from "react";
+import { MdOutlineDarkMode, MdOutlineLightMode } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
-import { selectThemeMode, toggleTheme } from "../../redux/slices/themeSlice";
 import { AppDispatchType } from "src/redux/store";
+import { selectThemeMode, toggleTheme } from "../../redux/slices/themeSlice";
+import { Button } from "../ui/button";
 
 const Header = () => {
   // redux related
@@ -12,10 +13,6 @@ const Header = () => {
   // useEffect
   useEffect(() => {
     document.documentElement.classList.toggle("dark", currentTheme === "dark");
-    document.documentElement.classList.toggle(
-      "light",
-      currentTheme === "light"
-    );
   }, [currentTheme]);
 
   const handleThemeChange = () => {
@@ -26,13 +23,18 @@ const Header = () => {
   return (
     <header className="sticky top-0">
       <div className="flex h-full w-full justify-end">
-        <button
-          className="text-[var(--color-text)]"
+        <Button
+          className="cursor-pointer rounded-full"
           type="button"
+          variant="outline"
           onClick={handleThemeChange}
         >
-          Toggle theme
-        </button>
+          {currentTheme === "dark" ? (
+            <MdOutlineLightMode />
+          ) : (
+            <MdOutlineDarkMode />
+          )}
+        </Button>
       </div>
     </header>
   );
