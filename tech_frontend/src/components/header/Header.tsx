@@ -14,6 +14,7 @@ const Header = () => {
     document.documentElement.classList.toggle("dark", currentTheme === "dark");
   }, [currentTheme]);
 
+  // event handlers
   const handleThemeChange = () => {
     console.log("Theme changed");
     dispatch(toggleTheme());
