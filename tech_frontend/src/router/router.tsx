@@ -1,7 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 import DashLayout from "src/layouts/DashLayout";
 import Login from "src/pages/login/Login";
-import Public from "src/pages/public/Public";
+import Public from "src/pages/pub/Public";
 import Layout from "src/layouts/Layout";
 import NotesList from "src/pages/notes/NotesList";
 import UsersList from "src/pages/users/UsersList";
