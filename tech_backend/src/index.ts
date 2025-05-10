@@ -17,7 +17,6 @@ import notesRouter from "./routes/notes.routes.js"
 const { __dirname } = getPathInfo(import.meta.url);
 
 const app = express();
-const PORT = process.env.PORT || 3500;
 
 // connect db
 connectDB();
@@ -51,18 +50,4 @@ app.use(notFoundHandler)
 
 app.use(errHandler);
 
-// Start the server
-mongoose.connection.once("open", () => {
-  console.log("Connected to MongoDB");
-  app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
-  });
-});
-
-mongoose.connection.on(
-  "error",
-  (err: Error & Partial<NodeJS.ErrnoException>) => {
-    console.log(err);
-    mongooseConnectionErrorHandler(err);
-  }
-);
+export default app

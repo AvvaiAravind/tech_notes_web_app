@@ -5,6 +5,7 @@ import User from "../../../models/user.model";
 import { catchAsync } from "../../../utils/catchAsyncError";
 import { errorSender, getStackTrace } from "../../../utils/errorSender";
 import { generateResponse } from "../../../utils/generateResponse";
+import getIO from "../../../socket/socket";
 
 // @desc create user
 // @route post /users
@@ -67,6 +68,8 @@ const createNewUser = catchAsync(
     // const user = await User.findById(createdUser._id)
     //   .select("-password")
     //   .lean();
+
+    getIO().emit("user:created")
 
     if (createdUser) {
       return generateResponse({

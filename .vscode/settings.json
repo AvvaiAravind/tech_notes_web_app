@@ -7,7 +7,7 @@
     "oklch",
     "Stylesheet",
     "vite",
+    "webtransport",
     "whitesmoke"
-  ],
-
+  ]
 }

@@ -1,11 +1,12 @@
 import { NextFunction, Request, Response } from "express";
+import { Types } from "mongoose";
 import { z } from "zod";
 import Note from "../../../models/note.model";
+import getIO from "../../../socket/socket";
 import { catchAsync } from "../../../utils/catchAsyncError";
 import { errorSender, getStackTrace } from "../../../utils/errorSender";
 import { generateResponse } from "../../../utils/generateResponse";
 import { objectIdSchema } from "../../../utils/validationSchema";
-import { Types } from "mongoose";
 
 // @desc Update a note
 // @route PATCH /notes/:_id
@@ -80,12 +81,14 @@ const updateNote = catchAsync(
       );
     }
 
-     noteToUpdate.userId = new Types.ObjectId(userId);
+    noteToUpdate.userId = new Types.ObjectId(userId);
     if (typeof title === "string") noteToUpdate.title = title;
     if (typeof content === "string") noteToUpdate.content = content;
     if (typeof completed === "boolean") noteToUpdate.completed = completed;
 
     const updatedNote = await noteToUpdate.save();
+
+    getIO().emit("note:updated");
 
     return generateResponse({
       res,
