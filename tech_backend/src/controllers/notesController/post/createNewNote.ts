@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { z } from "zod";
 import Note from "../../../models/note.model";
+import getIO from "../../../socket/socket";
 import { catchAsync } from "../../../utils/catchAsyncError";
 import { errorSender, getStackTrace } from "../../../utils/errorSender";
 import { generateResponse } from "../../../utils/generateResponse";
@@ -16,9 +17,7 @@ const createNewNoteSchema = z.object({
     .string()
     .min(5, "Title must be at least 3 characters")
     .max(25, "Title must be at most 25 characters"),
-  content: z
-    .string()
-    .min(10, "Content must be at least 10 characters"),
+  content: z.string().min(10, "Content must be at least 10 characters"),
 });
 
 type createNewNoteBody = z.infer<typeof createNewNoteSchema>;
@@ -48,6 +47,8 @@ const createNewNote = catchAsync(
     /*  const createdNote = await noteDoc.save(); // using save to trigger pre save hook in the model schema */
 
     if (createdNote) {
+      getIO().emit("note:created");
+
       return generateResponse({
         res,
         statusCode: 201,

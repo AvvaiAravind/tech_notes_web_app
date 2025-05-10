@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { z } from "zod";
 import User from "../../../models/user.model";
+import getIO from "../../../socket/socket";
 import { catchAsync } from "../../../utils/catchAsyncError";
 import { errorSender, getStackTrace } from "../../../utils/errorSender";
 import { generateResponse } from "../../../utils/generateResponse";
@@ -88,6 +89,8 @@ const updateUser = catchAsync(
     if (typeof password === "string") user.password = password;
 
     const updatedUser = await user.save();
+
+    getIO().emit("user:updated");
 
     return generateResponse({
       res,

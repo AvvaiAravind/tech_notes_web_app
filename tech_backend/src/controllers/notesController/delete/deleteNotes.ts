@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { z } from "zod";
 import Note from "../../../models/note.model";
+import getIO from "../../../socket/socket";
 import { catchAsync } from "../../../utils/catchAsyncError";
 import { errorSender, getStackTrace } from "../../../utils/errorSender";
 import { generateResponse } from "../../../utils/generateResponse";
@@ -59,6 +60,9 @@ const deleteNote = catchAsync(
         })
       );
     }
+
+    //emitting even to all the people
+    getIO().emit("note:deleted");
 
     return generateResponse({
       res,

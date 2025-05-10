@@ -6,6 +6,7 @@ import { catchAsync } from "../../../utils/catchAsyncError";
 import { errorSender, getStackTrace } from "../../../utils/errorSender";
 import { generateResponse } from "../../../utils/generateResponse";
 import { objectIdSchema } from "../../../utils/validationSchema";
+import getIO from "../../../socket/socket";
 
 // @desc delete user
 // @route delete /users/:_id
@@ -71,6 +72,8 @@ const deleteUser = catchAsync(
         })
       );
     }
+
+    getIO().emit("user:deleted")
 
     return generateResponse({
       res,
