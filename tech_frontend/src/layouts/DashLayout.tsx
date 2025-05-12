@@ -1,12 +1,10 @@
-import { Outlet } from "react-router-dom";
+import { Outlet } from "react-router";
 
 const DashLayout = () => {
   return (
-    <>
-      <div className="">
-        <Outlet />
-      </div>
-    </>
+    <div className="">
+      <Outlet />
+    </div>
   );
 };
 

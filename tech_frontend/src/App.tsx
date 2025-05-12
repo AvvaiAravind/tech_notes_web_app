@@ -1,14 +1,8 @@
-import Header from "./components/header/Header";
+import { RouterProvider } from "react-router";
+import router from "./router/router";
 
 function App() {
-  return (
-    <div className="bg-background scrollbar-thin flex flex-grow flex-col items-center">
-      <Header />
-      <div className="text-primary h-[200vh] p-4 text-center text-5xl">
-        Vite Template
-      </div>
-    </div>
-  );
+  return <RouterProvider router={router} />;
 }
 
 export default App;
