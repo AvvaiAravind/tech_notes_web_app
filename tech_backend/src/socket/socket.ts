@@ -1,6 +1,6 @@
 import { Server as HTTPServer } from "http";
 import { Server as SocketIOServer } from "socket.io";
-import { errorSender } from "../utils/errorSender";
+import { errorSender, getStackTrace } from "../utils/errorSender";
 import {
   ClientToServerEvents,
   InterServerEvents,
@@ -41,7 +41,11 @@ export const initSocket = (httpServer: HTTPServer) => {
 
 const getIO = (): SocketIOServer => {
   if (!io) {
-    throw errorSender;
+    throw errorSender({
+      statusCode: 503,
+      stackTrace: getStackTrace(),
+      message: "something wrong with starting socket io",
+    });
   }
   return io;
 };
